@@ -2,6 +2,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/StatusBadge";
 import { CheckCircle2, XCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 interface BidContract {
   id: string;
@@ -29,13 +31,24 @@ const mockFreelancerBids: BidContract[] = [
 export function BidsContractsCard({ role }: BidsContractsCardProps) {
   const items = role === "client" ? mockClientContracts : mockFreelancerBids;
   const title = role === "client" ? "Active Contracts" : "My Bids";
+  const navigate = useNavigate();
+
+  const handleAccept = (id: string) => {
+    toast.success(`Contract approved!`);
+  };
+
+  const handleReject = (id: string) => {
+    toast.error(`Contract rejected`);
+  };
 
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span>{title}</span>
-          <Button size="sm" variant="outline">View All</Button>
+          <Button size="sm" variant="outline" onClick={() => navigate(role === "client" ? "/contracts" : "/bids")}>
+            View All
+          </Button>
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -53,10 +66,10 @@ export function BidsContractsCard({ role }: BidsContractsCardProps) {
                 <StatusBadge status={item.status} />
                 {item.status === "pending" && role === "client" && (
                   <div className="flex gap-1">
-                    <Button size="sm" variant="ghost" className="h-7 w-7 p-0">
+                    <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={() => handleAccept(item.id)}>
                       <CheckCircle2 className="h-4 w-4 text-success" />
                     </Button>
-                    <Button size="sm" variant="ghost" className="h-7 w-7 p-0">
+                    <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={() => handleReject(item.id)}>
                       <XCircle className="h-4 w-4 text-destructive" />
                     </Button>
                   </div>
