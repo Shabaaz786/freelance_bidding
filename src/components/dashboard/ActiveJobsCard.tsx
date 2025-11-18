@@ -2,6 +2,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/StatusBadge";
 import { Eye, Edit } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 interface Job {
   id: string;
@@ -28,13 +30,22 @@ const mockFreelancerJobs: Job[] = [
 
 export function ActiveJobsCard({ role }: ActiveJobsCardProps) {
   const jobs = role === "client" ? mockClientJobs : mockFreelancerJobs;
+  const navigate = useNavigate();
+
+  const handleView = (jobId: string) => {
+    toast.info(`Viewing job ${jobId}`);
+  };
+
+  const handleEdit = (jobId: string) => {
+    toast.info(`Editing job ${jobId}`);
+  };
 
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span>Active Jobs</span>
-          <Button size="sm" variant="outline">View All</Button>
+          <Button size="sm" variant="outline" onClick={() => navigate("/jobs")}>View All</Button>
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -50,10 +61,10 @@ export function ActiveJobsCard({ role }: ActiveJobsCardProps) {
                 </div>
               </div>
               <div className="flex gap-2">
-                <Button size="sm" variant="ghost">
+                <Button size="sm" variant="ghost" onClick={() => handleView(job.id)}>
                   <Eye className="h-4 w-4" />
                 </Button>
-                <Button size="sm" variant="ghost">
+                <Button size="sm" variant="ghost" onClick={() => handleEdit(job.id)}>
                   <Edit className="h-4 w-4" />
                 </Button>
               </div>

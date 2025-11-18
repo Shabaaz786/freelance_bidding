@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { useNavigate } from "react-router-dom";
 import { MessageSquare } from "lucide-react";
 
 interface Message {
@@ -18,6 +19,7 @@ const mockMessages: Message[] = [
 ];
 
 export function MessagesCard() {
+  const navigate = useNavigate();
   return (
     <Card>
       <CardHeader>
@@ -26,7 +28,7 @@ export function MessagesCard() {
             <MessageSquare className="h-5 w-5" />
             Recent Messages
           </span>
-          <Button size="sm" variant="outline">View All</Button>
+          <Button size="sm" variant="outline" onClick={() => navigate("/messages")}>View All</Button>
         </CardTitle>
       </CardHeader>
       <CardContent>
